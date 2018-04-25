@@ -3,7 +3,7 @@
 
 2、注意事项：下载版本32位和64位要和电脑上安装的JDK版本一致
 
-3、使用STS过程总遇到的两个错误：
+3、使用STS过程总遇到的问题：
    (1)Java was started but returned exit code=13
       参考：https://stackoverflow.com/questions/30372337/sts-launch-error-java-was-started-but-returned-exit-code-13#
 	  采用Markus的回复，删除了环境变量Path中的C:\Program Files (x86)\Common Files\Oracle\Java\javapath;
@@ -11,3 +11,9 @@
       STS版本位数和JDK版本位数不一致，一个是32位一个是64位；
 	  STS查看版本位数：STS.ini
 	  JDK：CMD java -version
+   (3) STS.ini 配置文件中指定了JDK版本，本地环境变量中配置的JDK版本要匹配
+   (4) A Java Runtime Environment （JRE）or Java Development Kit （JDK）must be available in order to run STS.
+       No Java virtual machine was found after searching the following locations:
+	   D:\sts-bundle\sts-3.9.4.RELEASE\jre\bin\javaw.exe
+	   javaw.exe in your current PATH
+	   问题原因：JDK环境变量没有配置或配置不正确，检查并重新配置JDK环境变量
