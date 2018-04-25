@@ -1,0 +1,13 @@
+﻿
+1、下载地址：http://spring.io/tools/sts/all
+
+2、注意事项：下载版本32位和64位要和电脑上安装的JDK版本一致
+
+3、使用STS过程总遇到的两个错误：
+   (1)Java was started but returned exit code=13
+      参考：https://stackoverflow.com/questions/30372337/sts-launch-error-java-was-started-but-returned-exit-code-13#
+	  采用Markus的回复，删除了环境变量Path中的C:\Program Files (x86)\Common Files\Oracle\Java\javapath;
+   (2)Failed to load the JNI shared library "D:\Program Files\Java\jdk1.6.0_45\bin\..\jre\bin\server\jvm.dll"
+      STS版本位数和JDK版本位数不一致，一个是32位一个是64位；
+	  STS查看版本位数：STS.ini
+	  JDK：CMD java -version
