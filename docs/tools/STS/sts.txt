@@ -17,3 +17,6 @@
 	   D:\sts-bundle\sts-3.9.4.RELEASE\jre\bin\javaw.exe
 	   javaw.exe in your current PATH
 	   问题原因：JDK环境变量没有配置或配置不正确，检查并重新配置JDK环境变量
+	   
+总结：
+     上述问题总的来说，就是STS和JDK版本要匹配，JDK环境变量配置要正确
