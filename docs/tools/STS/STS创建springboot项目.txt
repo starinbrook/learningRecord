@@ -1,0 +1,4 @@
+
+1、File-New-Spring Starter Project
+2、修改Name、Group、Package，其他根据需要修改
+3、点击Next进入下一页，Available输入框中分别输入Web、DevTools并勾选，点击Finish
