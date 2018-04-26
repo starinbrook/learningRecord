@@ -12,8 +12,8 @@
 	   
     2、使用JSONP
 	   实现原理：前后台约定，如果请求参数有callback（可以自定义），那么后台返回javascript代码而不是json数据
-	   前台发出请求类型是script，有callback参数
-       需要修改后台：后台动态创建Script标签，返回js代码 application/javascript
+	   前台发出请求类型是script（通过动态创建script标签实现发送script类型的请求，script标签用完就销毁），有callback参数
+       后台需求修改：返回js代码 application/javascript
 	   
     3、消除跨域：(1)修改被调用方使被调用方支持跨域
 	        (2)修改调用方，隐藏跨域，通过代理
