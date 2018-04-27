@@ -17,37 +17,40 @@
 	   
 	   简单示例：
 	   前端
-	       function callback(data) {
-             console.log(data);
-           }
-	   
-	       $.ajax({
-		     url:"http://localhost:8080/jsonpserver/getdate",
-		     dataType:"jsonp",
-		     jsonp:"callback",
-		     success:function(json) {
-			 console.log(json);
-		     }
-	       });
+	       <body>
+			<a href="#" onclick="get1()">发送get1请求</a>
+			<script>
+			  function get1() {
+				 $.ajax({
+					 url:"http://localhost:8081/jsonpserver/getdate",
+					 dataType:"jsonp",
+					 success:function(json) {
+						 console.log(json);
+					 }
+				 });
+			  }
+			</script>
+		  </body>
 	   后台
 	       public class JsonpService extends HttpServlet{
     
 			protected void doGet(HttpServletRequest req, HttpServletResponse res) {
 				doPost(req, res);
 			}
-	
+			
 			protected void doPost(HttpServletRequest req, HttpServletResponse res) {
 				try {
-					res.setContentType("application/javascript");
-					String data = "hello";
-					PrintWriter pw = res.getWriter();
-					pw.write("callback('"+data+"')");
+					String data = "hello world!";
+					//前端传过来的回调函数名称
+					String callback = req.getParameter("callback");
+					res.getWriter().write(callback + "('"+data+"')");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-	
-          }
+		}
+		
+		更多示例参考：https://www.cnblogs.com/chiangchou/p/jsonp.html
 	   
     3、消除跨域：(1)修改被调用方使被调用方支持跨域
 	        (2)修改调用方，隐藏跨域，通过代理
