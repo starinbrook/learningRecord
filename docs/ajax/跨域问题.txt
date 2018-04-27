@@ -15,5 +15,39 @@
 	   前台发出请求类型是script（通过动态创建script标签实现发送script类型的请求，script标签用完就销毁），有callback参数
        后台需求修改：返回js代码 application/javascript
 	   
+	   简单示例：
+	   前端
+	       function callback(data) {
+             console.log(data);
+           }
+	   
+	       $.ajax({
+		     url:"http://localhost:8080/jsonpserver/getdate",
+		     dataType:"jsonp",
+		     jsonp:"callback",
+		     success:function(json) {
+			 console.log(json);
+		     }
+	       });
+	   后台
+	       public class JsonpService extends HttpServlet{
+    
+			protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+				doPost(req, res);
+			}
+	
+			protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+				try {
+					res.setContentType("application/javascript");
+					String data = "hello";
+					PrintWriter pw = res.getWriter();
+					pw.write("callback('"+data+"')");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	
+          }
+	   
     3、消除跨域：(1)修改被调用方使被调用方支持跨域
 	        (2)修改调用方，隐藏跨域，通过代理
