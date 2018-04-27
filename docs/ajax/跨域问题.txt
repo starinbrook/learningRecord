@@ -16,7 +16,7 @@
        后台需求修改：返回js代码 application/javascript
 	   
 	   简单示例：
-	   前端
+	   前端（调用方）
 	       <body>
 			<a href="#" onclick="get1()">发送get1请求</a>
 			<script>
@@ -31,7 +31,7 @@
 			  }
 			</script>
 		  </body>
-	   后台
+	   后台（被调用方）
 	       public class JsonpService extends HttpServlet{
     
 			protected void doGet(HttpServletRequest req, HttpServletResponse res) {
@@ -52,5 +52,29 @@
 		
 		更多示例参考：https://www.cnblogs.com/chiangchou/p/jsonp.html
 	   
-    3、消除跨域：(1)修改被调用方使被调用方支持跨域
-	        (2)修改调用方，隐藏跨域，通过代理
+    3、消除跨域：
+	        (1)被调用方解决 修改被调用方使被调用方支持跨域
+			   响应头增加字段支持跨域（三种方法）
+			   a 服务器端实现
+			     Filter解决方案
+				 HttpServletResponse res = (HttpServletResponse)response;
+				 res.addHeader("Access-Control-Allow-Origin", "*");  // 允许所有域跨域
+		         res.addHeader("Access-Control-Allow-Methods", "*"); // 允许所有方法跨域
+				 chain.doFilter(request, response);
+				 
+				 注意：
+				 带cookie请求跨域时Access-Control-Allow-Origin不能是*，需要是全匹配，res.addHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+				 另外还需要增加 res.addHeader("Access-Control-Allow-Credentials", "true"); 
+				 
+			   b Nginx配置
+			     
+			   
+			   c Apache配置
+			   
+			   如果项目使用了Spring 框架，那么只需要在后台增加一个注解@CrocsOrion即可实现跨域
+	
+	        (2)调用方解决 修改调用方，隐藏跨域，通过反向代理
+
+               反向代理：访问同一个域名的两个不同url，最后会去到两个不同的服务器			
+			
+			
