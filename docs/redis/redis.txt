@@ -1,0 +1,45 @@
+
+参考：https://blog.csdn.net/liqingtx/article/details/60330555
+
+1、redis是什么？
+redis是一个开源的、使用C语言编写的、支持网络交互的、可基于内存也可持久化的Key-Value数据库。
+
+2、Linux下安装redis
+下载 redis-4.0.9.tar.gz
+解压： tar -xvf redis-4.0.9.tar.gz
+进入redis目录： cd redis-4.0.9/
+编译redis源码： make
+安装redis ：make PREFIX=/usr/local/redis install       PREFIX 指定安装目录
+
+3、启动redis
+进入redis安装目录：cd /usr/local/redis
+此目录中有一个bin 目录，启动redis的脚本redis-server就在此目录下
+启动方式有两种：（1）直接运行redis-server ：./bin/redis-server
+                （2）运行redis-server并加载redis.conf配置 ：./bin/redis-server redis.conf   需要将redis.conf（redis解压目录下有一份）拷贝到redis安装目录下
+				     修改redis.conf中的daemonize配置为yes，可以实现让redis在后台运行，即守护进行
+					 
+4、redis数据结构
+redis是一种高级的key:value存储系统，其中value支持五种数据类型：
+（1）字符串（strings）
+     set/get/incr/decr/incrby/decrby
+（2）字符串列表（lists）
+     lpush/rpush/lrange
+（3）字符串集合（sets）
+     sadd/smembers/sismember/sunion
+（4）有序字符串集合（sorted sets）
+     zadd/zrange
+（5）哈希（hashes）
+     hset/hgetall
+关于key：
+（1）key不要太长，尽量不要超过1024字节，这不仅消耗内存，而且会降低查找的效率；
+（2）key也不要太短，太短的话，key的可读性会降低；
+（3）在一个项目中，key最好使用统一的命名模式，例如user:10000:passwd。
+
+5、redis持久化
+redis提供了两种持久化的方式：（1）RDB（Redis DataBase）；（2）AOF（Append Only File）
+RDB，简而言之，就是在不同的时间点，将redis存储的数据生成快照并存储到磁盘等介质上；
+AOF，则是换了一个角度来实现持久化，那就是将redis执行过的所有写指令记录下来，在下次redis重新启动时，只要把这些写指令从前到后再重复执行一遍，就可以实现数据恢复了。
+其实RDB和AOF两种方式也可以同时使用，在这种情况下，如果redis重启的话，则会优先采用AOF方式来进行数据恢复，这是因为AOF方式的数据恢复完整度更高。
+如果你没有数据持久化的需求，也完全可以关闭RDB和AOF方式，这样的话，redis将变成一个纯内存数据库，就像memcache一样。
+RDB，高效；AOF，数据完整性高
+对于我们应该选择RDB还是AOF，官方的建议是两个同时使用。这样可以提供更可靠的持久化方案。
