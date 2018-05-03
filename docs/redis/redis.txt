@@ -43,3 +43,12 @@ AOF，则是换了一个角度来实现持久化，那就是将redis执行过的所有写指令记录下来，在下
 如果你没有数据持久化的需求，也完全可以关闭RDB和AOF方式，这样的话，redis将变成一个纯内存数据库，就像memcache一样。
 RDB，高效；AOF，数据完整性高
 对于我们应该选择RDB还是AOF，官方的建议是两个同时使用。这样可以提供更可靠的持久化方案。
+
+6、redis命令大全 
+http://www.redis.cn/commands.html
+
+Keys常用命令：
+del exists keys rename type
+
+Strings常用命令：
+append 
