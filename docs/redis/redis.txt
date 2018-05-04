@@ -51,4 +51,61 @@ Keys常用命令：
 del exists keys rename type
 
 Strings常用命令：
-append 
+append ...
+
+7、Jedis 和 redis 的关系
+Jedis是Java程序访问redis的一个客户端开发包，如果想要通过Java访问redis就需要使用Jedis。
+针对不同主流编程语言都有相应的访问redis的客户端，如C语言使用hiredis来访问redis。
+
+Java使用Jedis，需要的基础jar包：jedis-2.9.0.jar，如果使用连接池还需要commons-pool2-2.3.jar。
+所需要的jar包可以从https://mvnrepository.com中搜索下载，下载方式：找到指定的jar包详情页，点击Files后面的jar即可下载。
+
+不使用连接池：
+        Jedis jedis = new Jedis("127.0.0.1", 6379); // 设置IP地址和端口号
+		jedis.set("foo", "bar");                        // 保存数据
+		String value = jedis.get("foo");                // 获取数据
+		System.out.println(value);
+		jedis.close();                                  // 释放连接
+		
+使用连接池：
+        // 获取连接池配置对象
+		JedisPoolConfig config = new JedisPoolConfig();
+		// 设置最大连接数
+		config.setMaxTotal(30);
+		// 设置最大空闲连接数
+		config.setMaxIdle(10);
+		
+		// 获得连接池
+		JedisPool jedisPool = new JedisPool(config, "127.0.0.1", 6379);
+		
+		// 获得核心对象
+		Jedis jedis = null;
+		try {
+			// 通过连接池获得连接：
+			jedis = jedisPool.getResource();
+			// 设置数据
+			jedis.set("name", "tom");
+			// 获取数据
+			String name = jedis.get("name");
+			System.out.println(name);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 释放资源
+			if(jedis != null) {
+				jedis.close();
+			}
+			if(jedisPool != null) {
+				jedisPool.close();
+			}
+		}
+
+
+使用Jedis时常见问题：
+报错：redis.clients.jedis.exceptions.JedisConnectionException: java.net.SocketTimeoutException: connect timed out
+原因：运行redis的服务器没有打开6379端口
+以Linux为例打开6379端口：
+   (1)vim /etc/sysconfig/iptables
+   (2)添加一行配置：-A INPUT -m state --state NEW -m tcp -p tcp --dport 6379 -j ACCEPT
+   (3)重启Linux防火墙：service iptables restart
