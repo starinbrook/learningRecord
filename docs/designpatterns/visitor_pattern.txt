@@ -1,0 +1,6 @@
+
+访问者模式一开始不太容易理解，网上查找了多篇介绍访问者模式的文章，感觉如下两篇还可以：
+
+https://segmentfault.com/a/1190000012495957
+
+http://www.runoob.com/design-pattern/visitor-pattern.html
