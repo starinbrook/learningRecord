@@ -26,6 +26,23 @@ Oolong汇编语言对我们来说可读性更高，有助于我们分析理解class文件结构。
     （4）随便找一个class文件进行反编译测试，执行完下面命令会在当前目录下生成Ch1Servlet.j文件
          java COM.sootNsmoke.oolong.Gnoloo Ch1Servlet.class
          
-参考：https://blog.csdn.net/u011687186/article/details/53454613
+4 使用Oolong查看.class文件内容，执行如下命令
+  java COM.sootNsmoke.oolong.DumpClass Ch1Servlet.class
+
+  输出：
+    000000 cafebabe          magic = ca fe ba be
+    000004 0000              minor version = 0
+    000006 0034              major version = 52
+    000008 0033              51 constants
+    00000a 0a000e0019           1. Methodref class #14 name-and-type #25
+    00000f 0b001a001b           2. InterfaceMethodref class #26 name-and-type #27
+    000014 07001c               3. Class name #28
+    ...
+ 
+  说明：真正的class文件只有上面第二列内容，而且是顺序排列的，第一列和第三列是方便我们查看的辅助信息
+
+
+参考：《深入分析Java Web技术内幕》
+      https://blog.csdn.net/u011687186/article/details/53454613
       http://jeff312.iteye.com/blog/1270724
 
