@@ -1,0 +1,31 @@
+
+1 Oolong是什么？
+Oolong是一种基于JVM的汇编语言。
+
+2 Oolong有什么用？
+Oolong是大牛Engel先生自己发明的一种基于JVM的汇编语言，按他自己的介绍，
+Oolong实际只是JVM bytecode的一个易于理解的教学版本，其本身似乎并不具备什么开发应用的价值。 
+也就是说Oolong能够帮助我们更好地理解class文件结构中包含的类信息，字节码文件对于我们来说不易读，
+Oolong汇编语言对我们来说可读性更高，有助于我们分析理解class文件结构。
+
+3 使用Oolong反编译.class文件
+   （1）下载Oolong JVM项目源码
+        https://github.com/jpbirdy/programming-for-the-jvm
+   （2）将programming-for-the-jvm\src\main\java\COM打为jar包
+        编译（切换到programming-for-the-jvm目录下执行，执行前创建classes目录）
+            javac -d classes 
+                  -sourcepath src src\main\java\COM\sootNsmoke\instructions\*.java 
+                                  src\main\java\COM\sootNsmoke\jvm\*.java 
+                                  src\main\java\COM\sootNsmoke\oolong\*.java 
+                                  src\main\java\COM\sootNsmoke\prolog\*.java 
+                                  src\main\java\COM\sootNsmoke\scheme\*.java 
+                  -Xlint:deprecation -Xlint:unchecked
+        打包（切换到classes目录下执行）
+             jar cvf Oolong.jar COM
+    （3）将Oolong.jar放到JDK的lib目录下，并将D:\Program Files\Java\jdk1.8.0_111\lib\Oolong.jar添加到环境变量classpath路径下
+    （4）随便找一个class文件进行反编译测试，执行完下面命令会在当前目录下生成Ch1Servlet.j文件
+         java COM.sootNsmoke.oolong.Gnoloo Ch1Servlet.class
+         
+参考：https://blog.csdn.net/u011687186/article/details/53454613
+      http://jeff312.iteye.com/blog/1270724
+
