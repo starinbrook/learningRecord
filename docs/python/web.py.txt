@@ -1,0 +1,23 @@
+
+1、web.py 是一个Python Web框架，官网地址：http://webpy.org/；
+
+2、使用web.py框架开发Python Web应用，首先需要安装web.py
+   web.py官网http://webpy.org/ 给出了安装web.py的命令 pip install web.py；
+   pip 是 Python 包管理工具（在windows系统下如果已经安装了Python那么在Python安装目录的Scripts目录下可以找打pip命令，如D:\Python27\Scripts目录下）
+   
+3、使用web.py的示例：
+   import web
+        
+   urls = (
+       '/(.*)', 'hello'
+   )
+   app = web.application(urls, globals())
+
+   class hello:        
+      def GET(self, name):
+        if not name: 
+            name = 'World'
+        return 'Hello, ' + name + '!'
+
+   if __name__ == "__main__":
+      app.run()

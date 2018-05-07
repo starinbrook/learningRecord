@@ -1,0 +1,4 @@
+
+从python程序中访问java
+
+http://jpype.sourceforge.net/doc/user-guide/userguide.html#using
