@@ -1,0 +1,68 @@
+
+1、如何判断某个主机是否可连通？
+  ping IP地址或域名
+  
+2、如何判断某个主机上的某个端口是否可连通？
+  telenet IP地址 端口号
+
+3、如何发起HTTP请求？
+
+  发起HTTP请求本质就是建立一个Socket连接
+  
+  模拟浏览器发送HTTP请求的方式：
+  （1）使用开源的HttpClient工具包
+  （2）Linux中的curl命令
+       curl URL                                        发送HTTP GET请求 获取URL数据
+	   curl -I URL                                     查看响应（头）信息
+	   curl -H "Cookie:key1=value1; key2=value2;" URL  带请求头信息发起请求
+	   curl -X POST URL                                指定请求类型为POST请求
+	   curl -X POST -d DATA URL                        带请求参数的POST请求
+	   
+	   示例：
+	   curl -X POST -d "serviceName=app.service.commonService&methodName=getUser&requestJson={}" http://127.0.0.1:8080/adp/servlet/webServlet
+	   
+	   https://blog.csdn.net/wangjianno2/article/details/39718681
+	   
+	   关于使用curl命令的-d参数携带HTTP request的请求体（request body）的一些问题
+       HTTP Requset请求头中的Content-Type是用来说明请求体的MIME类型的，默认是application/x-www-form-urlencoded类型。
+	   curl -d参数是用携带POST/PUT请求的请求体内容的，有如下几种支持的格式：
+       
+	     curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data  
+         备注：Content-Type缺省为application/x-www-form-urlencoded，所以使用param1=value1&param2=value2格式时，可省略。
+
+         curl -d "param1=value1&param2=value2" -H "Content-Type: application/x-www-form-urlencoded" -X POST http://localhost:3000/data  
+         备注：使用param1=value1&param2=value2格式时，也可以显式地指出application/x-www-form-urlencoded.
+
+         curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data  
+         备注：使用json格式的数据，一定要显式地指明Content-Type为application/json.
+
+         curl -d "@data.txt" -X POST http://localhost:3000/data  
+         备注：将param1=value1&param2=value2格式的数据单独放入文件，然后通过-d "@filename"来引入
+
+         curl -d "@data.json" -H "Content-Type: application/json" -X POST http://localhost:3000/data  
+         备注：将json格式的数据单独放入文件，然后通过-d "@filename"来引入
+		 
+4、与浏览器缓存相关的HTTP头部
+  （1）Cache-control/Pragma
+  （2）Expires
+  （3）Last-Modified/Etag
+  
+5、域名解析
+  
+  修改本机域名解析
+  Windows：C:\Windows\System32\drivers\etc\hosts
+  Linux：/etc/hosts
+  
+  查看DNS服务器地址：
+  Windows：ipconfig
+  Linux：cat /etc/resolv.conf
+  
+  查询域名解析结果
+  Windows/Linux：nslookup
+  Linux：dig 域名
+  
+  清除本机缓存的域名
+  Windows：ipconfig /flushdns
+  Linux：/etc/init.d/nscd restart
+  
+  
