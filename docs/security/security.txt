@@ -8,3 +8,21 @@
    
    签名：
    私钥负责签名，公钥负责验证
+   
+2、XSS
+
+   https://blog.csdn.net/ganyingxie123456/article/details/70230486
+   
+   Cross-Site Scripting (XSS) 漏洞在以下情况下发生：
+   (1). 数据通过一个不可信赖的数据源进入 Web 应用程序。
+      对于 Reflected XSS，不可信赖的源通常为 Web 请求，
+	  对于 Persisted（也称为 Stored）XSS，该源通常为数据库或其他后端数据存储。
+   (2). 未检验包含在动态内容中的数据，便将其传送给了 Web 用户。
+   
+    避免 XSS 漏洞的最佳方法是验证所有进入应用程序以及由应用程序传送至用户端的数据。
+    
+    示例：(使用commons-lang.jar)
+	String content = request.getParameter("myEditor");
+    /* 防止反射式XSS攻击 */
+    content = StringEscapeUtils.escapeHtml(StringEscapeUtils.escapeJavaScript(content));
+    response.getWriter().print("<div class='content'>"+content+"</div>");
