@@ -81,6 +81,28 @@ Java核心技术36讲
   (2)Java 每实例化一个 Exception，都会对当时的栈进行快照，这是一个相对比较重的操作
   
 
+3、谈谈final、finally、finalize有什么不同？
+  
+  final可以修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，final修饰的变量是不可以修改的，而final修饰的方法是不可以重写的（override）。
+  
+  finally则是Java保证重点代码一定要被执行的一种机制。我们可以使用try-finally或者try-catch-finally来进行类似关闭JDBC连接、保证unlock等动作。
 
-   
+  finalize是基础类java.lang.Object的一个方法，它的设计目的是保证对象在被垃圾收集前，完成特定资源的回收。finalize机制现在已经不推荐使用，并且在JDK1.9开始被标记为deprecated。
+  
+  最佳实践
+  推荐使用final关键字来明确表示我们代码的语义、逻辑意图
+  （1）我们可以将方法或者类声明为final，这样就可以明确告知别人，这些行为是不许修改的；
+  （2）使用final修饰参数或者变量，也可以清楚地避免意外赋值导致的编程错误；
+  （3）final变量产生了某种程度的不可变（immutable）的效果，所以，可以用于保护只读数据，尤其是在并发编程中，因为明确地不能再赋值 final 变量，
+       有利于减少额外的同步开销，也可以省去一些防御性拷贝的必要。
+	   
+  注意：finally的特例代码
+  try {
+    // do something
+    System.exit(1);
+  } finally{
+    System.out.println(“Print from finally”);
+  }
+  上面 finally 里面的代码可不会被执行的哦，这是一个特例。
 
+  
