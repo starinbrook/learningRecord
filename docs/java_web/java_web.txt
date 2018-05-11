@@ -65,4 +65,59 @@
   Windows：ipconfig /flushdns
   Linux：/etc/init.d/nscd restart
   
+6、Tomcat系统架构与设计模式
+  
+  Tomcat的两个核心组件：Connector、Container
+  Connector主要负责对外交流，接收外部请求
+  Container主要负责内部事务，处理Connector接收的请求
+  
+  一个Container可以选择对应多个Connector
+  多个Connector和一个Container构成一个Service
+  Service只是在Container和Connector外面多包了一层，把他们组装在一起，向外面提供服务
+  一个Service可以设置多个Connector，但是只能有一个Container
+  
+  而Server是Service的生存环境
+  也就是说整个Tomcat的生命周期由Server控制
+  
+  Connector组件是Tomcat中的两个核心组件之一，它的主要任务是负责接收浏览器发过来的TCP连接请求，创建一个Request和Response对象，用户和请求端交换数据。
+  然后会产生一个线程来处理这个请求，并把产生的Request和Response对象传给处理这个请求的线程，处理这个请求的线程就是Container组件要做的事情了。
+  
+  多线程的处理是Connector设计的核心
+  
+  Container 是容器的父接口，所有子容器必须实现这个接口，Container 容器的设计是典型的责任链的设计模式
+  Container 由4个子容器组件构成，分别是Engine、Host、Context、Wrapper
+  Engine包含Host，Host包含Context，Context包含Wrapper
+  通常一个Servlet class对应一个Wrapper，如果有多个Servlet，则可以定义多个Wrapper
+  如果有多个Wrapper，则要定义一个更高的Container，如Context
+  
+  Context可以定义在父容器Host中，Host不是必需的，但是要运行war程序，就必须要用Host，因为在war中必有web.xml文件，这个文件的解析需要Host。
+  如果要有多个Host，就要定义一个top容器Engine，而Engine没有父容器了，一个Engine代表一个完整的Servlet引擎
+  
+  Host是Engine的子容器，一个Host在Engine中代表一个虚拟主机，这个虚拟主机的作用就是运行多个应用
+  
+  Context代表Servlet的Context，它具备了Servle运行的基本环境，理论上只要有Context就能运行Servlet了。简单的Tomcat可以没有Engine和Host
+  
+  Wrapper代表一个Servlet，它负责管理一个Servlet，包括Servlet的装载、初始化、执行及资源回收
+  
+  
+7、Spring框架的设计理念与设计模式分析
+
+  Spring的三个核心组件：Core（道具）、Context（舞台）、Bean（演员）
+  
+  Bean是Spring核心中的核心，可以说Spring是面向Bean的编程，Bean Oriented Programing BOP
+  
+  Spring框架的设计目标
+  Spring 解决了一个非常关键的问题，它可以让你把对象之间的依赖关系转而用配置文件来管理，即依赖注入机制
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
   
