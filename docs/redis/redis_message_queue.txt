@@ -1,0 +1,15 @@
+
+使用Redis实现消息队列的两种方式：
+
+生产者消费者模式：
+  生产者推送消息：
+      jedis.lpush(channel, message); // 推送消息message到频道channel
+  消费者消费消息：
+      jedis.brpop(BLOCK_TIMEOUT, channel);  // 从频道channel获取消息，如果没有获取到则阻塞BLOCK_TIMEOUT秒，直到获取到消息或者超时为止
+  
+发布订阅模式：
+  发布者发布消息：
+      jedis.publish(channel, message); // 发布消息message到频道channel
+  订阅者订阅消息：
+      jedis.subscribe(subscriber, channel); // 订阅者subscriber订阅频道channel上的消息，其中 subscriber 继承 JedisPubSub 并重写onMessage等事件监听方法
+  
