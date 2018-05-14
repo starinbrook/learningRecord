@@ -12,4 +12,7 @@
       jedis.publish(channel, message); // 发布消息message到频道channel
   订阅者订阅消息：
       jedis.subscribe(subscriber, channel); // 订阅者subscriber订阅频道channel上的消息，其中 subscriber 继承 JedisPubSub 并重写onMessage等事件监听方法
+	  
+
+参考：https://segmentfault.com/a/1190000012244418
   
