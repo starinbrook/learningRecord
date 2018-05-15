@@ -1,0 +1,71 @@
+
+代理模式：为另一个对象提供一个替身或占位符以控制对这个对象的访问
+
+使用代理模式创建代理对象，让代理对象控制某对象的访问，被代理对象可以是远程的对象、创建开销大的对象或需要安全控制的对象。
+
+静态代理事实上就是装饰者模式，区别是装饰者模式一般都是传入一个被装饰类在构造器中，而静态代理则是自己创建一个类作为成员变量
+
+
+静态代理——自己定义代理类
+=======================================================================
+package test;
+
+public interface Subject   
+{   
+  public void doSomething();   
+}
+
+=======================================================================
+package test;
+
+public class RealSubject implements Subject   
+{   
+  public void doSomething()   
+  {   
+    System.out.println( "call doSomething()" );   
+  }   
+}  
+
+=======================================================================
+package test;
+
+public class SubjectProxy implements Subject
+{
+  Subject subimpl = new RealSubject();
+  public void doSomething()
+  {
+     subimpl.doSomething();
+  }
+}
+
+=======================================================================
+package test;
+
+public class TestProxy 
+{
+   public static void main(String args[])
+   {
+       Subject sub = new SubjectProxy();
+       sub.doSomething();
+   }
+}
+
+=======================================================================
+
+JDK动态代理——为实现了接口的类动态生成代理
+参考：https://blog.csdn.net/mhmyqn/article/details/48474815
+
+JDK的动态代理，就是在程序运行的过程中，根据被代理的接口来动态生成代理类的class文件，并加载运行的过程。
+
+如何使用JDK动态代理:
+JDK提供了java.lang.reflect.Proxy类来实现动态代理的，可通过它的newProxyInstance来获得代理实现类。
+同时对于代理的接口的实际处理，是一个java.lang.reflect.InvocationHandler，它提供了一个invoke方法供实现者提供相应的代理逻辑的实现。
+可以对实际的实现进行一些特殊的处理，像Spring AOP中的各种advice。
+
+
+CGLib ——为没有实现接口的类动态生成代理
+参考：https://blog.csdn.net/zghwaicsdn/article/details/50957474
+
+CGLIB原理：动态生成一个要代理类的子类，子类重写要代理的类的所有不是final的方法。在子类中采用方法拦截的技术拦截所有父类方法的调用，顺势织入横切逻辑。
+           它比使用java反射的JDK动态代理要快。
+CGLIB缺点：对于final方法，无法进行代理。
