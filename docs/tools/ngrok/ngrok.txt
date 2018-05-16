@@ -1,0 +1,26 @@
+
+ngrok是一个外网映射工具，也就是说可以把你的内网地址映射到外网，让外网可以访问到你内网地址。
+
+ngrok官网地址：https://ngrok.com/
+
+基本用法：ngrok http 8080 就会把本地的8080映射到一个外网地址
+问题：1、ngrok服务器在国外，所以在国内访问很慢，有时候无法访问
+      2、地址是随机字符串，每次映射的地址都不同
+	  
+推荐用法：ngrok -config ngrok.cfg -subdomain example 8080
+帮助文档：http://www.tunnel.mobi/     
+可惜的是现在http://www.tunnel.mobi/已经无法访问了。。。。
+
+
+其他类似的国内服务器
+http://www.luyouxia.com/
+映射后的外网地址：
+http://brookstar.w3.luyouxia.net/
+
+http://mofasuidao.cn/
+映射后的外网地址：http://k1d9zk7.hk1.mofasuidao.cn
+
+
+个人感觉路由侠更好一些，外网地址固定且有规律
+
+路由侠需要下载客户端，魔法隧道不需要下载客户端
