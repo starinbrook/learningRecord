@@ -1,0 +1,124 @@
+
+初识Java微信公众号开发
+https://www.imooc.com/learn/368
+
+慕课网中的一个免费课程，讲解Java微信公众号开发，很实用，从中学到的知识点：
+
+1、从微信公众平台https://mp.weixin.qq.com/ 注册微信公众号，个人可选择订阅号，企业可选择服务号，订阅号较服务号少了很多接口功能，
+   如微信支付等在订阅号中都是没有这个权限的。
+   
+2、公众号分两种模式：编辑模式 和 开发模式，并且这两种模式是互斥的，也就是同一时刻只能选择使用其中一种模式
+    编辑模式：
+             使用注册邮箱登录微信公众平台，功能->自动回复
+			                                   ->自定义菜单
+										    通过这里的功能设置自动回复和自定义菜单 属于编辑模式
+    开发模式：
+	         使用注册邮箱登录微信公众平台，开发->基本配置->服务器配置，填写服务器地址(URL)、令牌(Token)等后，点击启用
+			                                此时处于开发模式
+			 说明：这里的令牌(Token) 是我们自己随便定义的字符串，只要保证这里配置的和程序代码里写的Token一致即可
+
+3、微信开发者文档阅读
+    使用注册邮箱登录微信公众平台，开发->开发者工具->开发者文档，
+	                                                          开始开发->接入指南
+															  消息管理->接收普通消息
+															  
+4、开发模式下，请求消息是从 微信用户 到 微信服务器，再从 微信服务器 到 我们自己的微信公众号服务器；
+   我们在自己的微信公众号服务器处理完用户请求后，将响应消息返回给 微信服务器，再由微信服务器返回给微信用户；
+   
+5、微信公众号开发，需要一个外网可以访问的域名，另外微信只支持80端口，为方便本地开发可以使用外网映射工具，推荐路由侠
+
+6、xml格式数据 转 Map ，可以借助dom4j-1.6.1.jar
+
+   示例：
+   /**
+	 * xml 转为 map集合
+	 * @param request
+	 * @return
+	 * @throws Throwable
+	 */
+	public static Map<String, String> xmlToMap(HttpServletRequest request) throws Throwable {
+		Map<String, String> map = new HashMap<String, String>();
+		SAXReader reader = new SAXReader();
+		
+		InputStream ins = request.getInputStream();
+		Document doc = reader.read(ins);
+		Element root = doc.getRootElement();
+		
+		List<Element> list = root.elements();
+		
+		for(Element e : list) {
+			map.put(e.getName(), e.getText());
+		}
+		
+		ins.close();
+		
+		return map;
+	}
+
+   PO对象转xml格式数据，可以借助xstream-1.3.1.jar
+   
+   示例：
+   /**
+	 * 将文本消息转换为xml
+	 * @param textMessage
+	 * @return
+	 */
+	public static String textMessageToXml(TextMessage textMessage) {
+	    XStream xstream = new XStream();
+	    xstream.alias("xml", textMessage.getClass());
+	    xstream.toXML(textMessage);
+		return xstream.toXML(textMessage);
+	}
+	
+	其中TextMessage是个PO对象
+	package com.imooc.po;
+
+public class TextMessage {
+
+	private String ToUserName;
+	private String FromUserName;
+	private long CreateTime;
+	private String MsgType;
+	private String Content;
+	private String MsgId;
+	public String getToUserName() {
+		return ToUserName;
+	}
+	public void setToUserName(String toUserName) {
+		ToUserName = toUserName;
+	}
+	public String getFromUserName() {
+		return FromUserName;
+	}
+	public void setFromUserName(String fromUserName) {
+		FromUserName = fromUserName;
+	}
+	public long getCreateTime() {
+		return CreateTime;
+	}
+	public void setCreateTime(long createTime) {
+		CreateTime = createTime;
+	}
+	public String getMsgType() {
+		return MsgType;
+	}
+	public void setMsgType(String msgType) {
+		MsgType = msgType;
+	}
+	public String getContent() {
+		return Content;
+	}
+	public void setContent(String content) {
+		Content = content;
+	}
+	public String getMsgId() {
+		return MsgId;
+	}
+	public void setMsgId(String msgId) {
+		MsgId = msgId;
+	}
+}
+
+完整示例代码参考：samples\Weixin
+
+	
