@@ -1,0 +1,10 @@
+
+ping
+
+telnet
+
+Linux£ºtraceroute
+Windows£ºtracert
+
+tcpdump
+
