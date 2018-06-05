@@ -410,6 +410,48 @@ Java核心技术36讲
            如果某个接口设计有变，不会对使用其他接口的子类造成影响。
   依赖反转（Dependency Inversion），实体应该依赖于抽象而不是具体实现。也就是说高层次模块，不应该依赖于低层次模块，而是应该依赖于抽象。
            实践这一原则是保证产品代码之间适当耦合度的法宝。
+		   
+		   
+14、谈谈你知道的设计模式？请手动实现单例模式，Spring 等框架中使用了哪些模式？
+
+  设计模式是人们为软件开发中相同表征的问题，抽象出的可重复利用的解决方案。
+  
+  按照模式的应用目标分类，设计模式可以分为创建型模式、结构型模式和行为型模式。
+  
+  创建型模式，是对对象创建过程的各种问题和解决方案的总结。包括各种工厂模式、单例模式、构造器模式、原型模式。
+  
+  结构型模式，是针对软件设计结构的总结，关注于类或对象继承、组合方式的实践经验。包括桥接模式、适配器模式、装饰器模式、代理模式、组合模式、外观模式、享元模式等。
+  
+  行为型模式，是从类或对象之间交互、职责划分等角度总结的模式。包括策略模式、解释器模式、命令模式、观察者模式、迭代器模式、模板方法模式、访问者模式等。
+  
+  设计模式典型使用场景举例：
+  Java IO框架使用了装饰器模式
+  java.lang.StringBuilder使用了构造器模式
+  Spring框架中 BeanFactory和ApplicationContext应用了工厂模式；
+               在Bean的创建中，Spring也为不同scope定义的对象，提供了单例和原型等模式实现；
+			   AOP 使用了代理模式、装饰器模式、适配器模式等；
+			   各种事件监听器，是观察者模式的典型应用；
+			   类似JdbcTemplate等则是应用了模板模式
+			   
+  带双检锁的单例模式代码：
+  public class Singleton {
+      private static volatile Singleton singleton = null;
+      private Singleton() {
+      }
+
+      public static Singleton getSingleton() {
+        if (singleton == null) { // 尽量避免重复进入同步块
+            synchronized (Singleton.class) { // 同步.class，意味着对同步类方法调用
+                if (singleton == null) {
+                    singleton = new Singleton();
+                }
+            }
+        }
+        return singleton;
+      }
+    }
+  
+  
 
 
 
