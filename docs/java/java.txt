@@ -503,6 +503,28 @@ Java核心技术36讲
   如果有另外的线程试图锁定某个已经被偏向过的对象，JVM就需要撤销（revoke）偏向锁，并切换到轻量级锁。轻量级锁依赖CAS操作Mark Word 来试图获取锁，如果重试成功，
   就使用普通的轻量级锁；否则，进一步升级为重量级锁。
 
+17、一个线程两次调用 start() 方法会出现什么情况？谈谈线程的生命周期和状态转移。
+
+  Java 是不允许启动两次的，第二次调用必然会抛出 IllegalThreadStateException，这是一种运行时异常，多次调用start被认为是编程错误。
+  
+  关于线程声明周期的不同状态，在Java 5以后，线程状态被明确定义在其公共内部枚举类型java.lang.Thread.State中，分别是：
+  
+  A thread state. A thread can be in one of the following states:
+
+  *NEW
+   A thread that has not yet started is in this state.
+  *RUNNABLE
+   A thread executing in the Java virtual machine is in this state.
+  *BLOCKED
+   A thread that is blocked waiting for a monitor lock is in this state.
+  *WAITING
+   A thread that is waiting indefinitely for another thread to perform a particular action is in this state.
+  *TIMED_WAITING
+   A thread that is waiting for another thread to perform an action for up to a specified waiting time is in this state.
+  *TERMINATED
+   A thread that has exited is in this state.
+
+   A thread can be in only one state at a given point in time. These states are virtual machine states which do not reflect any operating system thread states.
   
 
 
