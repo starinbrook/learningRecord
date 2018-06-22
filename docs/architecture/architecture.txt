@@ -687,7 +687,26 @@
 	是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在 2000 年的 ACM PODC 上提出的一个猜想。
 	2002 年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。
 	
+	Consistency         一致性
+	Availability        可用性
+	Partition Tolerance 分区容错性
 	
+	CAP 定理：
+	In a distributed system (a collection of interconnected nodes that share data.), 
+	you can only have two out of the following three guarantees across a write/read pair: 
+	Consistency, Availability, and Partition Tolerance 
+	- one of them must be sacrificed.
+	
+	Consistency：
+	A read is guaranteed to return the most recent write for a given client.
+	
+	Availability：
+	A non-failing node will return a reasonable response within a reasonable amount of time (no error or timeout).
+	
+	Partition Tolerance：
+	The system will continue to function when network partitions occur.
+	
+	what's network partitions ???
 
 23、CAP 细节
 
