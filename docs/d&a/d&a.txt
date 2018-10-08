@@ -60,6 +60,7 @@ NP类问题就是指那些已知答案以后计算机可以比较容易地验证
 a[i]_address = base_address + i * data_type_size
 3、特点
 高效的随机访问、低效的插入删除
+4、标记-清楚的思想（优化删除一次移动一次）
 =================================================================================================================
 四、链表
 1、单链表
@@ -81,3 +82,313 @@ a[i]_address = base_address + i * data_type_size
 7、快慢指针：
 	（1）快慢指针一起走，只是走的步长不同，慢指针一次走一步，快指针一次走两步：定位中间节点
 	（2）快指针先走k步，然后快慢指针再一起走：定位倒数第k个节点
+8、单链表反转？
+9、链表中环的检测？
+10、两个有序的链表合并？
+11、删除链表倒数第n个节点？
+12、求链表的中间节点？
+13、哨兵节点简化代码
+---------------------------------------------------------------------------------------
+package com.zhuyca.linkedlist;
+
+/**
+ * Title: Node.java<br>
+ * Description: 链表节点定义<br>
+ * Copyright: Copyright (c) 2018<br>
+ *
+ * @author zhuyongchang
+ * @date 2018年10月07日
+ */
+public class Node<E> {
+    protected Node next; //指针域
+    public E data; //数据域
+
+    public Node(E data) {
+        this.data = data;
+    }
+
+    public void display() {
+        System.out.print(data + "->");
+    }
+}
+---------------------------------------------------------------------------------------
+package com.zhuyca.linkedlist;
+
+/**
+ * Title: LinkedList.java<br>
+ * Description: 单链表定义<br>
+ * Copyright: Copyright (c) 2018<br>
+ *
+ * @author zhuyongchang
+ * @date 2018年10月07日
+ */
+public class LinkedList<E> {
+    public Node first; //头节点
+    private int pos = 0; //节点的位置
+
+    public LinkedList() {
+        this.first = null;
+    }
+
+    // 从链表头部插入节点
+    public void addFirstNode(E data) {
+        Node node = new Node(data);
+        node.next = first;
+        first = node;
+    }
+
+    // 从链表头部删除节点
+    public Node deleteFirstNode() {
+        Node tempNode = first;
+        first = tempNode.next;
+        return tempNode;
+    }
+
+    // 从指定位置插入节点
+    public void add(int index, E data) {
+        Node node = new Node(data);
+        Node current = first;
+        Node previous = first;
+        while (pos != index) {
+            previous = current;
+            current = current.next;
+            pos++;
+        }
+        node.next = current;
+        previous.next = node;
+        pos = 0;
+    }
+
+    // 删除指定位置节点
+    public Node deleteByPos(int index) {
+        Node current = first;
+        Node previous = first;
+        while (pos != index) {
+            pos++;
+            previous = current;
+            current = current.next;
+        }
+        if (current == first) {
+            first = first.next;
+        } else {
+            pos = 0;
+            previous.next = current.next;
+        }
+        return current;
+    }
+
+    // 删除指定数据的节点
+    public Node deleteByData(E data) {
+        Node current = first;
+        Node previous = first;
+        while (current.data != data) {
+            if (current.next == null) {
+                return null;
+            }
+            previous = current;
+            current = current.next;
+        }
+        if (current == first) {
+            first = first.next;
+        } else {
+            previous.next = current.next;
+        }
+        return current;
+    }
+
+    // 根据索引查找
+    public Node findByPos(int index) {
+        Node current = first;
+        while (pos != index) {
+            current = current.next;
+            pos++;
+        }
+        pos = 0;
+        return current;
+    }
+
+    // 根据数据查找
+    public Node findByData(E data) {
+        Node current = first;
+        while (current.data != data) {
+            if (current.next == null) {
+                return null;
+            }
+            current = current.next;
+        }
+        return current;
+    }
+
+    // 展示所有节点
+    public void displayAllNodes() {
+        Node current = first;
+        while (current != null) {
+            current.display();
+            current = current.next;
+        }
+    }
+}
+---------------------------------------------------------------------------------------
+package com.zhuyca.linkedlist;
+
+/**
+ * Title: Test.java<br>
+ * Description: 测试单链表，包括单链表反转、判断单链表是否回文串<br>
+ * Copyright: Copyright (c) 2018<br>
+ *
+ * @author zhuyongchang
+ * @date 2018年10月07日
+ */
+public class Test {
+    public static void main(String[] args) {
+        LinkedList list = new LinkedList();
+        list.addFirstNode("a");
+        list.addFirstNode("b");
+        list.addFirstNode("c");
+
+        System.out.println(isPalindrome(list));
+    }
+
+    /**
+     * 使用快慢指针法判断单链表是否回文串
+     * 1、快慢指针定位到中间位置
+     * 2、将slow定位后半段链表反转
+     * 3、反转后的子链表和原链表节点一一对比，若全都相同则是回文串
+     * @param list
+     * @return
+     */
+    public static boolean isPalindrome(LinkedList list) {
+        boolean isPalindrome = true;
+        Node fast = list.first;
+        Node slow = list.first;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        LinkedList subList = new LinkedList();
+        subList.first = slow;
+        reverse(subList);
+
+        Node p = list.first;
+        Node q = subList.first;
+        while (p != null && q != null) {
+            if (!String.valueOf(p.data).equals(String.valueOf(q.data))) {
+                isPalindrome = false;
+                break;
+            }
+            p = p.next;
+            q = q.next;
+        }
+        return isPalindrome;
+    }
+
+    /**
+     * 单链表反转（不借助辅助存储空间，就地反转）
+     * @param list
+     */
+    public static void reverse(LinkedList list) {
+        if (list == null || list.first == null) return;
+        Node p = list.first;
+        Node q = list.first;
+        Node t = null;
+        while (p.next != null) {
+            q = p.next;
+            p.next = t;
+            t = p;
+            p = q;
+        }
+        p.next = t;
+        list.first = p;
+    }
+	
+	/**
+     * 删除倒数第k个节点元素
+     * 1、使用快慢指针法定位倒数第k个节点
+     * 2、删除倒数第k个节点
+     * @param list
+     * @param k
+     * @return
+     */
+    public static void deleteCountdownK(LinkedList list, int k) {
+        Node fast = list.first;
+        Node slow = list.first;
+        Node pre = null;
+        while (k > 0 && fast != null) {
+            fast = fast.next;
+            k--;
+        }
+        if (k == 0 && fast == null) {
+            list.first = slow.next;
+            return;
+        }
+        if (k > 0) {
+            System.out.println("overflow");
+            return;
+        }
+        while (fast != null) {
+            if (fast.next == null) {
+                pre = slow;
+            }
+            slow = slow.next;
+            fast = fast.next;
+        }
+        pre.next = slow.next;
+    }
+	
+	/**
+     * 合并两个有序的单链表（递归）
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public static LinkedList combine(LinkedList list1, LinkedList list2) {
+        LinkedList list = new LinkedList();
+        if (list1 == null || list1.first == null) {
+            return list2;
+        } else if (list2 == null || list2.first == null) {
+            return list1;
+        }
+
+        if ((int) list1.first.data < (int) list2.first.data) {
+            list.first = list1.first;
+            LinkedList list3 = new LinkedList();
+            list3.first = list1.first.next;
+            list.first.next = combine(list3, list2).first;
+        } else {
+            list.first = list2.first;
+            LinkedList list3 = new LinkedList();
+            list3.first = list2.first.next;
+            list.first.next = combine(list3, list1).first;
+        }
+        return list;
+    }
+	
+	/**
+     * 检测单链表中是否存在环
+     * 1、设置快慢指针，快指针每次2步，慢指针每次1步
+     * 2、若快指针能够走到最后说明无环
+     * 3、若快指针和慢指针相遇则说明有环
+     * @param list
+     * @return
+     */
+    public static boolean hasLoop(LinkedList list) {
+        boolean flag = false;
+        if (list != null && list.first != null) {
+            Node fast = list.first;
+            Node slow = list.first;
+            while (fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+                if (slow == fast) {
+                    flag = true;
+                    break;
+                }
+            }
+        }
+        return flag;
+    }
+}
+---------------------------------------------------------------------------------------
+
+
